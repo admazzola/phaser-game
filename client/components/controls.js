@@ -9,9 +9,12 @@ export default class Controls {
     this.none = true
     this.prevNone = true
 
+    //https://phaser.io/examples/v3/view/game-objects/tilemap/static/grid-movement
+
     // add a second pointer
     scene.input.addPointer()
 
+    //detect click on a gui element
     const detectPointer = (gameObject, down) => {
       if (gameObject.btn) {
         switch (gameObject.btn) {
@@ -34,6 +37,23 @@ export default class Controls {
       detectPointer(gameObject, false)
     )
 
+    scene.input.keyboard.on('keydown', function (event) {
+      switch(event.key){
+          case 'w': this.commandMove(0,1);
+            break;
+          case 'a': this.commandMove(-1,0);
+            break;
+          case 's': this.commandMove(0,-1);
+            break;
+          case 'd': this.commandMove(1,0);
+            break;
+      }
+   }.bind(this));
+
+
+
+
+
     let left = new Control(scene, 0, 0, 'left').setRotation(-0.5 * Math.PI)
     let right = new Control(scene, 0, 0, 'right').setRotation(0.5 * Math.PI)
     let up = new Control(scene, 0, 0, 'up')
@@ -45,6 +65,25 @@ export default class Controls {
 
   controlsDown() {
     return { left: this.left, right: this.right, up: this.up, none: this.none }
+  }
+
+  commandMove(dx,dy)
+  {
+    console.log('command move')
+
+    var tile = layer.getTileAtWorldXY(player.x + (dx*32), player.y + (dy*32), true);
+
+        if (tile.index === 2)
+        {
+            //  Blocked, we can't move
+        }
+        else
+        {
+            player.x += 32*dx;
+            player.y += 32*dy;
+          //  player.angle = -90;
+        }
+
   }
 
   resize() {

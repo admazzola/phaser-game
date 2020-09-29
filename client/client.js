@@ -15,6 +15,7 @@ const config = {
     width: 896,
     height: 504
   },
+  pixelArt: true,
   scene: [BootScene, GameScene]
 }
 
